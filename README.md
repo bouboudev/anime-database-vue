@@ -106,7 +106,7 @@ npm run lint
 See [Configuration Reference](https://cli.vuejs.org/config/).
 
 ### Link :
-[https://qsbsq.csb.app](https://lambent-selkie-080506.netlify.app/)
+https://lambent-selkie-080506.netlify.app/
 
 
 <p align="right">(<a href="#top">back to top</a>)</p>
