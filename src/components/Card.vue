@@ -1,7 +1,7 @@
 <template>
   <div class="card">
     <a :href="anime.url" target="_blank">
-      <img :src="anime.image_url" :alt="anime.title + ' Poster'" />
+      <img :src="anime.images.jpg.image_url" :alt="anime.title + ' Poster'" />
       <h3>{{ anime.title }}</h3>
     </a>
   </div>

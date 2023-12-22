@@ -37,11 +37,14 @@ export default {
     const animelist = ref([]);
     const HandleSearch = async () => {
       animelist.value = await fetch(
-        `https://api.jikan.moe/v3/search/anime?q=${search_query.value}`
+        `https://api.jikan.moe/v4/anime?q=${search_query.value}`
       )
-        .then((res) => res.json())
-        .then((data) => data.results);
-      search_query.value = "";
+      .then((res) => res.json(
+          ))
+          .then((data) => data.data)
+          .catch((err) => console.log(err));
+          search_query.value = "";
+          console.log('anime:',animelist.value);
     };
     return {
       Card,
