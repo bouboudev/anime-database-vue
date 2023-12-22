@@ -80,7 +80,7 @@ The goal of the project was to use an api to retrieve the information from the a
 
 Clone the repo
    ```sh
-   git clone https://github.com/bouboudev/backtobasics.git
+   git clone https://github.com/bouboudev/anime-database-vue
    ```
 ## Project setup
 ```
@@ -105,8 +105,8 @@ npm run lint
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
 
-### Link SANDBOX :
-https://qsbsq.csb.app
+### Link :
+[https://qsbsq.csb.app](https://lambent-selkie-080506.netlify.app/)
 
 
 <p align="right">(<a href="#top">back to top</a>)</p>
