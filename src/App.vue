@@ -1,12 +1,12 @@
 <template>
   <div class="app">
     <header>
-      <h1>The<strong>Anime</strong>Database</h1>
+      <h1>La <strong>Base de données </strong>des Anime</h1>
       <form class="search-box" @submit.prevent="HandleSearch">
         <input
           type="search"
           class="search-field"
-          placeholder="Chercher un Anime"
+          placeholder="Entrez un Anime puis tapez sur la touche Entrée"
           required
           v-model="search_query"
         />
@@ -18,14 +18,14 @@
         <Card v-for="anime in animelist" :key="anime.mal_id" :anime="anime" />
       </div>
       <div class="no-results" v-else>
-        <h3>Désolé, il n'y a pas de résultat...</h3>
+        <h3>{{message}}</h3>
       </div>
     </main>
   </div>
 </template>
 
 <script>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import Card from "./components/Card";
 
 export default {
@@ -35,26 +35,42 @@ export default {
   setup() {
     const search_query = ref("");
     const animelist = ref([]);
+
     const HandleSearch = async () => {
       animelist.value = await fetch(
         `https://api.jikan.moe/v4/anime?q=${search_query.value}`
       )
-      .then((res) => res.json(
-          ))
-          .then((data) => data.data)
-          .catch((err) => console.log(err));
-          search_query.value = "";
-          console.log('anime:',animelist.value);
+        .then((res) => res.json())
+        .then((data) => data.data)
+        .catch((err) => console.log(err));
+
+      search_query.value = "";
     };
+
+    const HandleTopSearch = async () => {
+      animelist.value = await fetch('https://api.jikan.moe/v4/top/anime')
+        .then((res) => res.json())
+        .then((data) => data.data)
+        .catch((err) => console.log(err));
+
+      search_query.value = "";
+    };
+
+    onMounted(() => {
+      HandleTopSearch();
+    });
+
     return {
       Card,
       search_query,
       animelist,
       HandleSearch,
+      HandleTopSearch,
     };
   },
 };
 </script>
+
 
 <style lang="scss">
 @import url("https://fonts.googleapis.com/css2?family=Fira+Sans:wght@500&display=swap");
@@ -90,6 +106,10 @@ header {
     &:hover {
       color: var(--couleur-secondaire);
     }
+    &:hover strong {
+      color: var(--couleur-principale);
+    }
+
   }
   .search-box {
     display: flex;
