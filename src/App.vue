@@ -14,11 +14,14 @@
     </header>
 
     <main>
-      <div class="cards" v-if="animelist.length > 0">
+      <div class="cards" v-if="animelist && animelist.length > 0">
         <Card v-for="anime in animelist" :key="anime.mal_id" :anime="anime" />
       </div>
-      <div class="no-results" v-else>
-        <h3>{{message}}</h3>
+      <div v-else-if="animelist.length < 0 || !isLoading">
+        {{message}}
+      </div>
+      <div class="loading" v-if='isLoading'>
+        <Loading/>
       </div>
     </main>
   </div>
@@ -27,16 +30,22 @@
 <script>
 import { ref, onMounted } from "vue";
 import Card from "./components/Card";
+import Loading from "./components/Loading";
 
 export default {
   components: {
     Card,
+    Loading,
   },
   setup() {
     const search_query = ref("");
     const animelist = ref([]);
+    const message = ref("Aucun résultat trouvé");
+    const isLoading = ref(false);
 
     const HandleSearch = async () => {
+      isLoading.value = true;
+      animelist.value = [];
       animelist.value = await fetch(
         `https://api.jikan.moe/v4/anime?q=${search_query.value}`
       )
@@ -45,15 +54,18 @@ export default {
         .catch((err) => console.log(err));
 
       search_query.value = "";
+      isLoading.value = false;
     };
 
     const HandleTopSearch = async () => {
+      isLoading.value = true;
       animelist.value = await fetch('https://api.jikan.moe/v4/top/anime')
         .then((res) => res.json())
         .then((data) => data.data)
         .catch((err) => console.log(err));
 
       search_query.value = "";
+      isLoading.value = false;
     };
 
     onMounted(() => {
@@ -66,6 +78,8 @@ export default {
       animelist,
       HandleSearch,
       HandleTopSearch,
+      isLoading,
+      message
     };
   },
 };
@@ -152,6 +166,19 @@ main {
     display: flex;
     flex-wrap: wrap;
     margin: 0 -8px;
+  }
+}
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  h2 {
+    color: var(--couleur-secondaire);
+    font-size: 32px;
+    font-weight: 400;
+    text-align: center;
+    text-transform: uppercase;
   }
 }
 </style>
